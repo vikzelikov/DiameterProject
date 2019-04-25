@@ -12,7 +12,7 @@ public class Router implements NetworkReqListener {
     private static final Logger logger = Logger.getLogger(Router.class);
 
     private KafkaRequest kafkaRequest = new KafkaRequest(); //для записей в кафку
-    private static Map<String, String> dictionary = new HashMap<>();
+    private static Map<String, String> dictionary = new HashMap<String, String>();
 
     static {
         //init dictionary
@@ -46,7 +46,9 @@ public class Router implements NetworkReqListener {
 
             try {
                 clientID = avpSet.getAvp(Avp.USER_IDENTITY).getUTF8String(); //получаем clientID для запроса баланса
-            } catch (AvpDataException | NullPointerException e) {
+            } catch (AvpDataException e) {
+                logger.error("AVP is invalid [Router.class]\n" + e.getMessage());
+            } catch (NullPointerException e) {
                 logger.error("ClientID was not received [Router.class]\n" + e.getMessage());
             }
 

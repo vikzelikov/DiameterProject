@@ -6,6 +6,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class KafkaProcessor {
        KafkaConsumer<String, String> consumer = new KafkaListener().getConsumer(); //получаем подписчика для получения баланса
 
         while (true) { //читаем топик responseBalance
-            ConsumerRecords<String, String> records = consumer.poll(1000);
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
             for (ConsumerRecord<String, String> record : records){
                 clientID = record.key();
                 balance = record.value();

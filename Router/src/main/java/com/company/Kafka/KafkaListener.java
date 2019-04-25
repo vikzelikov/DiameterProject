@@ -39,7 +39,7 @@ class KafkaListener {
         //подписываемся
         consumer.subscribe(Arrays.asList(topicName));
 
-        logger.info("Subscribed to topic=" + topicName + "[Router]");
+        logger.info("Subscribed to topic=" + topicName + " [Router]");
         System.out.println("Subscribed to topic=" + topicName);
 
         return consumer;

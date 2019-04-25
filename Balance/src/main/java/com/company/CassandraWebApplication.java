@@ -5,10 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootCassandraApplication {
+public class CassandraWebApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootCassandraApplication.class, args);
+		SpringApplication.run(CassandraWebApplication.class, args);
 
 		KafkaProcessor kafkaProcessor = new KafkaProcessor();
 		kafkaProcessor.start();

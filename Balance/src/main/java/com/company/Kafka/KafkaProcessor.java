@@ -25,7 +25,7 @@ public class KafkaProcessor {
         KafkaConsumer<String, String> consumer = new KafkaListener().getConsumer(); //получаем подписчика (слушателя)
 
         while (true) { //читаем топик requestBalance
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
+            ConsumerRecords<String, String> records = consumer.poll(1000);
             if(records.count() > 2000){
                 for (ConsumerRecord<String, String> record : records){
                     //если записей в кафке слишком много

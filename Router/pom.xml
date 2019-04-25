@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>ParentProject</artifactId>
+		<artifactId>DiameterProject</artifactId>
 		<groupId>com.parent</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
@@ -12,26 +12,37 @@
     <artifactId>Router</artifactId>
 
 
-
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
-
-
-
+    <!-- Исключаем стандартный логер диаметра SLF4J -->
     <dependencies>
         <dependency>
             <groupId>org.mobicents.diameter</groupId>
             <artifactId>restcomm-diameter-mux-jar</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
             <version>1.7.0.77</version>
         </dependency>
 
         <dependency>
             <groupId>org.mobicents.diameter</groupId>
             <artifactId>jdiameter-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
             <version>1.7.1-123</version>
         </dependency>
 
@@ -39,6 +50,16 @@
         <dependency>
             <groupId>org.mobicents.diameter</groupId>
             <artifactId>jdiameter-impl</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
             <version>1.5.10.0-build639</version>
         </dependency>
 
@@ -48,7 +69,6 @@
             <artifactId>kafka_2.12</artifactId>
             <version>2.1.1</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.apache.kafka</groupId>
@@ -65,34 +85,5 @@
 
     </dependencies>
 
-    <!--For packaging-->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        com.company.WebappApplication
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

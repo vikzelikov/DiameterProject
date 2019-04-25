@@ -5,7 +5,7 @@ import com.company.ServerJD.JDiameterServer;
 import org.apache.log4j.Logger;
 
 
-public class WebappApplication {
+public class Main {
 	public static void main(String[] args) {
 		JDiameterServer jDiameterServer = new JDiameterServer();
 		KafkaProcessor kafkaProcessor = new KafkaProcessor();
