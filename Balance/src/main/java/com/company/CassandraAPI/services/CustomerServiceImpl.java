@@ -1,7 +1,7 @@
-package com.company.CassandraAPI.services;
+package com.company.cassandraAPI.services;
 
-import com.company.CassandraAPI.domain.Customer;
-import com.company.CassandraAPI.repositories.CustomerRepository;
+import com.company.cassandraAPI.domain.Customer;
+import com.company.cassandraAPI.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

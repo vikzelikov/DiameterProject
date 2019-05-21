@@ -1,69 +1,63 @@
-package com.company.Balance;
+package com.company.balance;
 
+import com.company.cassandraAPI.controllers.CustomerController;
+import com.company.cassandraAPI.domain.Customer;
+import com.company.cassandraAPI.repositories.CustomerRepository;
+import com.company.cassandraAPI.services.CustomerService;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-import com.datastax.driver.core.exceptions.InvalidQueryException;
-import org.apache.log4j.Logger;
+import com.datastax.driver.core.exceptions.NoHostAvailableException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class Balance{
+import java.math.BigDecimal;
+import java.text.Bidi;
+import java.util.List;
+import java.util.Optional;
 
+public class Balance {
 
-    private static final Logger logger = Logger.getLogger(Balance.class);
-    private Session session = new CassandraConnector().connect(); //соединяемся с Cassandra
+    private static Logger logger = LogManager.getLogger(Balance.class);
+    public static Session connection = CassandraConnector.getInstance().connect(); //connection with Cassandra
+
 
     public String getBalance(String clientID){
-        return selectBalanceDB(clientID);
-    }
-
-    {
-        for(int i = 0; i<30; i++){
-            this.update("79005091262"+i, 21.2+i);
-        }
-
-
-    }
-
-    private String selectBalanceDB(String clientID){
+        String balance = null;
         System.out.println(clientID);
-        Double balance = null;
-        String query = "SELECT * from company.balance WHERE number = ?";
-        try {ResultSet queryResult = session.execute(query,clientID);
-            Row ansRow = queryResult.one();
-            balance = ansRow.getDouble("balance");
+        try {
+            balance = CustomerController.getBalance(clientID).toString();
+        }catch (NullPointerException ex){
+            logger.error("There isn't balance for the clientID");
         }
-        catch (InvalidQueryException e){
-            logger.error("Ошибка в getBalance [Balance.class] " + e.getMessage());
-        }
-
-        return String.valueOf(balance);
+        return balance;
     }
 
 
-    private void update(String number, double balance) {
-        String query = "INSERT INTO company.balance (number,balance) VALUES (?, ?)";
+    public static boolean isCassandraRunning(){
+        boolean result = false;
+        final String query = "SELECT now() FROM system.local"; //test query
+
         try {
-            session.execute(query, number, balance);
-            System.out.println("------------Update успешен---------------");}
-        catch (InvalidQueryException e){
-            final String createKeyspaceCql =
-                    "CREATE KEYSPACE IF NOT EXISTS company WITH replication = {\n" +
-                            "  'class': 'SimpleStrategy',\n" +
-                            "  'replication_factor': '2'\n" +
-                            "};";
-            session.execute(createKeyspaceCql);
-            System.out.println("Keyspace company created");
-            final String createTableCql =
-                    "CREATE TABLE if not exists company.balance (number varchar, balance double, PRIMARY KEY(number))";
-            session.execute(createTableCql);
-            System.out.println("Table balance created");
-            try {
-                session.execute(query, number, balance);
-                System.out.println("------------Update успешен---------------");}
-            catch (InvalidQueryException e1){
-                e.printStackTrace();
+            if(connection != null){
+                connection.execute(query);
+                result = true;
             }
         }
+        catch (NoHostAvailableException ex){
+            logger.error("Cassandra failed " + ex.getMessage());
+        }
+        return result;
     }
 
+
+
+
 }
+
+
+
+
+

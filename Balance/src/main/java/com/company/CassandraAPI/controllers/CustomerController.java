@@ -1,9 +1,9 @@
-package com.company.CassandraAPI.controllers;
+package com.company.cassandraAPI.controllers;
 
-import com.company.CassandraAPI.domain.Customer;
-import com.company.CassandraAPI.domain.DeltaBalance;
-import com.company.CassandraAPI.exceptionhandler.exceptions.*;
-import com.company.CassandraAPI.services.CustomerService;
+import com.company.cassandraAPI.domain.Customer;
+import com.company.cassandraAPI.domain.DeltaBalance;
+import com.company.cassandraAPI.exceptionhandler.exceptions.*;
+import com.company.cassandraAPI.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,8 +15,7 @@ import java.util.Optional;
 
 @Controller
 public class CustomerController {
-    private CustomerService customerService;
-
+    private static CustomerService customerService;
 
     @Autowired
     public void setCustomerService(CustomerService customerService) {
@@ -36,12 +35,23 @@ public class CustomerController {
 
     @RequestMapping(value = "/customers/show/{number}", method = RequestMethod.GET)
     @ResponseBody
-    public BigDecimal getBalance(@PathVariable String number) {
+    public static BigDecimal getBalance(@PathVariable String number) {
+        BigDecimal balance = null;
+        Optional<Customer> answ = customerService.getByNumber(number);
+        if (answ.isPresent()) {
+            balance = answ.get().getBalance();
+        }
+        return balance;
+    }
+
+    @RequestMapping(value = "/customers/auth/{number}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getPassword(@PathVariable String number) {
         Optional<Customer> answ = customerService.getByNumber(number);
         if (!answ.isPresent()) {
             throw new CustomerNotExistException();
         }
-            return answ.get().getBalance();
+        return answ.get().getPassword();
     }
 
 
@@ -85,4 +95,5 @@ public class CustomerController {
         }
         customerService.delete(number);
     }
+
 }

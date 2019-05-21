@@ -1,37 +1,45 @@
-package com.company.Balance;
+package com.company.balance;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
-import org.apache.log4j.Logger;
+import com.datastax.driver.core.policies.ConstantReconnectionPolicy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static java.lang.System.out;
 
 
 public class CassandraConnector {
 
-    private static final Logger logger = Logger.getLogger(CassandraConnector.class);
+    private static final Logger logger = LogManager.getLogger(CassandraConnector.class);
+    private static CassandraConnector INSTANCE = null;
 
-    public Session connect() {
-        Cluster cluster;
-        Session session;
-        final String node = "localhost";
-        final int port = 9042;
-        cluster = Cluster.builder().addContactPoint(node).withPort(port).build();
-        final Metadata metadata = cluster.getMetadata();
-        logger.info("Connected to cluster: %s\n" + metadata.getClusterName());
 
-        for (final Host host : metadata.getAllHosts())
-        {
-            logger.info("Datacenter:"+host.getDatacenter()+" Host:"+ host.getAddress()+" Rack:"+host.getRack());
-            out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
-                    host.getDatacenter(), host.getAddress(), host.getRack());
+    Session connect() {
+        Cluster cluster = null;
+        Session session = null;
+        cluster = Cluster.builder().addContactPoint("localhost")
+                .withPort(9042)
+                .withReconnectionPolicy(new ConstantReconnectionPolicy(1000))
+                .build();
+        if (cluster.getMetadata().checkSchemaAgreement()) {
+            // schema is in agreement
+            session = cluster.connect();
+            logger.info("Connected to Cassandra");
+            System.out.println("Connected to Cassandra");
         }
-        logger.info("Connected to IP Address " + node + ":" + port);
-        System.out.println("Connected to IP Address " + node + ":" + port);
-        session = cluster.connect();
         return session;
+    }
+
+    private CassandraConnector(){}
+
+    public static CassandraConnector getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new CassandraConnector();
+        }
+        return INSTANCE;
     }
 
 }

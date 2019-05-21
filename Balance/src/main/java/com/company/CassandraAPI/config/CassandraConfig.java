@@ -1,5 +1,4 @@
-package com.company.CassandraAPI.config;
-
+package com.company.cassandraAPI.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
@@ -29,10 +28,6 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         return Arrays.asList(specification);
     }
 
-    @Override
-    protected List<DropKeyspaceSpecification> getKeyspaceDrops() {
-        return Arrays.asList(DropKeyspaceSpecification.dropKeyspace(KEYSPACE));
-    }
 
     @Override
     protected String getKeyspaceName() {

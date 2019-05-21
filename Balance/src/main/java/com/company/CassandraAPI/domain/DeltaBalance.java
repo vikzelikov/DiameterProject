@@ -1,4 +1,4 @@
-package com.company.CassandraAPI.domain;
+package com.company.cassandraAPI.domain;
 
 import java.math.BigDecimal;
 

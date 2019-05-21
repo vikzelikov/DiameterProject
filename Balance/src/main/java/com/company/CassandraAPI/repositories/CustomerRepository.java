@@ -1,6 +1,6 @@
-package com.company.CassandraAPI.repositories;
+package com.company.cassandraAPI.repositories;
 
-import com.company.CassandraAPI.domain.Customer;
+import com.company.cassandraAPI.domain.Customer;
 import org.springframework.data.repository.CrudRepository;
 
 

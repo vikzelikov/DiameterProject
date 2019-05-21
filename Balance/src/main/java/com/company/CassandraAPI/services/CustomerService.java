@@ -1,6 +1,6 @@
-package com.company.CassandraAPI.services;
+package com.company.cassandraAPI.services;
 
-import com.company.CassandraAPI.domain.Customer;
+import com.company.cassandraAPI.domain.Customer;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,7 @@
 package com.company;
 
-import com.company.ClientJD.JDiameterConnectServer;
+import com.company.clientJD.JDiameterConnectServer;
+import com.company.clientJD.JDiameterRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,9 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WebappApplication {
 
 	public static void main(String[] args) {
-		JDiameterConnectServer jDiameterConnectServer = new JDiameterConnectServer();
-		jDiameterConnectServer.connect(); //устанавливаем связь с сервером для запроса баланса
-
+		JDiameterConnectServer.getInstance().connect();
+		JDiameterRequest.getInstance();
 		SpringApplication.run(WebappApplication.class, args);
 	}
 }
