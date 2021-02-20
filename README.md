@@ -1,4 +1,4 @@
 # DiameterProject
 Online Charging Server
 
-We use: Spring Boot, Kafka, Cassandra, Diameter protocol, JMeter
+We use: Java, Spring Boot, Kafka, Cassandra, Diameter protocol, JMeter
